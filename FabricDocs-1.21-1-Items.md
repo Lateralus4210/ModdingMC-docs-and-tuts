@@ -461,19 +461,19 @@ Since we only plan to add "humanoid" (helmet, chestplate, leggings, boots etc.) 
 }
 ```
 
-With the textures and equipment model definition present, you should be able to see your armor on entities that wear it:
+With the textures and equipment model definition present, you should be able to see your armor on entities that wear it.
 
-Custom Item Interactions
+# Custom Item Interactions
 Basic items can only go so far - eventually you will need an item that interacts with the world when it is used.
 
 There are some key classes you must understand before taking a look at the vanilla item events.
 
-TypedActionResult
-For items, the most common TypedActionResult you'll see is for ItemStacks - this class tells the game what to replace the item stack (or not to replace) after the event has occured.
+### ```TypedActionResult```
+For items, the most common ```TypedActionResult``` you'll see is for ```ItemStacks``` - this class tells the game what to replace the item stack (or not to replace) after the event has occured.
 
-If nothing has occured in the event, you should use the TypedActionResult#pass(stack) method where stack is the current item stack.
+If nothing has occured in the event, you should use the ```TypedActionResult#pass(stack)``` method where stack is the current item stack.
 
-You can get the current item stack by getting the stack in the player's hand. Usually events that require a TypedActionResult pass the hand to the event method.
+You can get the current item stack by getting the stack in the player's hand. Usually events that require a ```TypedActionResult``` pass the hand to the event method.
 
 ```java
 TypedActionResult.pass(user.getStackInHand(hand))
@@ -481,7 +481,7 @@ TypedActionResult.pass(user.getStackInHand(hand))
 
 If you pass the current stack - nothing will change, regardless of if you declare the event as failed, passed/ignored or successful.
 
-If you want to delete the current stack, you should pass an empty one. The same can be said about decrementing, you fetch the current stack and decrement it by the amount you want:
+If you want to delete the current stack, you should pass an empty one. The same can be said about decrementing; you fetch the current stack and decrement it by the amount you want:
 
 ```java
 ItemStack heldStack = user.getStackInHand(hand);
@@ -489,23 +489,22 @@ heldStack.decrement(1);
 TypedActionResult.success(heldStack);
 ```
 
-ActionResult
-Similarly, an ActionResult tells the game the status of the event, whether it was passed/ignored, failed or successful.
+### ```ActionResult```
+Similarly, an ```ActionResult``` tells the game the status of the event, whether it was passed/ignored, failed or successful.
 
-Overridable Events
-Luckily, the Item class has many methods that can be overriden to add extra functionality to your items.
+### ```Overridable Events```
+Luckily, the Item class has many methods that you can override to add extra functionality to your items.
 
-INFO
+A great example of these events being used can be found in the Playing SoundEvents page, which uses the ```useOnBlock``` event to play a sound when the player right clicks a block.
 
-A great example of these events being used can be found in the Playing SoundEvents page, which uses the useOnBlock event to play a sound when the player right clicks a block.
+```postHit```	Ran when the player hits an entity.
+```postMine```	Ran when the player mines a block.
+```inventoryTick```	Ran every tick whilst the item is in an inventory.
+```onCraft```	Ran when the item is crafted.
+```useOnBlock```	Ran when the player right clicks a block with the item.
+```use```	Ran when the player right clicks the item.
 
-postHit	Ran when the player hits an entity.
-postMine	Ran when the player mines a block.
-inventoryTick	Ran every tick whilst the item is in an inventory.
-onCraft	Ran when the item is crafted.
-useOnBlock	Ran when the player right clicks a block with the item.
-use	Ran when the player right clicks the item.
-The use() Event
+# The use() Event
 Let's say you want to make an item that summons a lightning bolt in front of the player - you would need to create a custom class.
 
 ```java
@@ -513,11 +512,10 @@ public class LightningStick extends Item {
     public LightningStick(Settings settings) {
         super(settings);
     }
-
 }
 ```
 
-The use event is probably the most useful out of them all - you can use this event to spawn our lightning bolt, you should spawn it 10 blocks in front of the players facing direction.
+The use event is probably the most useful out of them all - you can use this event to spawn our lightning bolt; you should spawn it 10 blocks in front of the players facing direction.
 
 ```java
 @Override
@@ -543,21 +541,18 @@ As usual, you should register your item, add a model and texture.
 
 As you can see, the lightning bolt should spawn 10 blocks in front of you - the player.
 
-Custom Enchantment Effects
+# Custom Enchantment Effects
 Starting from version 1.21, custom enchantments in Minecraft use a "data-driven" approach. This makes it easier to add simple enchantments, like increasing attack damage, but more challenging to create complex ones. The process involves breaking down enchantments into effect components.
 
 An effect component contains the code that defines the special effects of an enchantment. Minecraft supports various default effects, such as item damage, knockback, and experience.
 
-TIP
-
 Be sure to check if the default Minecraft effects satisfy your needs by visiting the Minecraft Wiki's Enchantment Effect Components page. This guide assumes you understand how to configure "simple" data-driven enchantments and focuses on creating custom enchantment effects that aren't supported by default.
 
-Custom Enchantment Effects
 Start by creating an enchantment folder, and within it, create an effect folder. Within that, we'll create the LightningEnchantmentEffect record.
 
 Next, we can create a constructor and override the EnchantmentEntityEffect interface methods. We'll also create a CODEC variable to encode and decode our effect; you can read more about Codecs here.
 
-The bulk of our code will go into the apply() event, which is called when the criteria for your enchantment to work is met. We'll later configure this Effect to be called when an entity is hit, but for now, let's write simple code to strike the target with lightning.
+The bulk of our code will go into the ```apply()``` event, which is called when the criteria for your enchantment to work is met. We'll later configure this Effect to be called when an entity is hit, but for now, let's write simple code to strike the target with lightning.
 
 ```java
 public record LightningEnchantmentEffect(EnchantmentLevelBasedValue amount) implements EnchantmentEntityEffect {
@@ -590,8 +585,8 @@ public record LightningEnchantmentEffect(EnchantmentLevelBasedValue amount) impl
 
 Here, the amount variable indicates a value scaled to the level of the enchantment. We can use this to modify how effective the enchantment is based on level. In the code above, we are using the level of the enchantment to determine how many lightning strikes are spawned.
 
-Registering the Enchantment Effect
-Like every other component of your mod, we'll have to add this EnchantmentEffect to Minecraft's registry. To do so, add a class ModEnchantmentEffects (or whatever you want to name it) and a helper method to register the enchantment. Be sure to call the registerModEnchantmentEffects() in your main class, which contains the onInitialize() method.
+# Registering the Enchantment Effect
+Like every other component of your mod, we'll have to add this ```EnchantmentEffect``` to Minecraft's registry. To do so, add a class ```ModEnchantmentEffects``` (or whatever you want to name it) and a helper method to register the enchantment. Be sure to call the ```registerModEnchantmentEffects()``` in your main class, which contains the ```onInitialize()``` method.
 
 ```java
 public class ModEnchantmentEffects {
@@ -613,7 +608,6 @@ public class ModEnchantmentEffects {
 }
 ```
 
-Creating the Enchantment
 Now we have an enchantment effect! The final step is to create an enchantment that applies our custom effect. While this can be done by creating a JSON file similar to those in datapacks, this guide will show you how to generate the JSON dynamically using Fabric's data generation tools. To begin, create an EnchantmentGenerator class.
 
 Within this class, we'll first register a new enchantment, and then use the configure() method to create our JSON programmatically.
@@ -668,7 +662,7 @@ public class EnchantmentGenerator extends FabricDynamicRegistryProvider {
 
 Before proceeding, you should ensure your project is configured for data generation; if you are unsure, view the respective docs page.
 
-Lastly, we must tell our mod to add our EnchantmentGenerator to the list of data generation tasks. To do so, simply add the EnchantmentGenerator to this inside of the onInitializeDataGenerator method.
+Lastly, we must tell our mod to add our ```EnchantmentGenerator``` to the list of data generation tasks. To do so, simply add the ```EnchantmentGenerator``` to this inside of the ```onInitializeDataGenerator``` method.
 
 ```java
 pack.addProvider(EnchantmentGenerator::new);
@@ -723,17 +717,17 @@ You should also add translations to your en_us.json file to give your enchantmen
 
 You should now have a working custom enchantment effect! Test it by enchanting a weapon with the enchantment and hitting a mob. 
 
-Custom Data Components
-As your items grow more complex, you may find yourself needing to store custom data associated with each item. The game allows you to store persistent data within an ItemStack, and as of 1.20.5 the way we do that is by using Data Components.
+# Custom Data Components
+As your items grow more complex, you may find yourself needing to store custom data associated with each item. The game allows you to store persistent data within an ```ItemStack```, and as of 1.20.5 the way we do that is by using Data Components.
 
 Data Components replace NBT data from previous versions with structured data types which can be applied to an ItemStack to store persistent data about that stack. Data components are namespaced, meaning we can implement our own data components to store custom data about an ItemStack and access it later. A full list of the vanilla data components can be found on this Minecraft wiki page.
 
-Along with registering custom components, this page covers the general usage of the components API, which also applies to vanilla components. You can see and access the definitions of all vanilla components in the DataComponentTypes class.
+Along with registering custom components, this page covers the general usage of the components API, which also applies to vanilla components. You can see and access the definitions of all vanilla components in the ```DataComponentTypes``` class.
 
-Registering a Component
-As with anything else in your mod you will need to register your custom component using a ComponentType. This component type takes a generic argument containing the type of your component's value. We will be focusing on this in more detail further down when covering basic and advanced components.
+### Registering a Component
+As with anything else in your mod you will need to register your custom component using a ```ComponentType```. This component type takes a generic argument containing the type of your component's value. We will be focusing on this in more detail further down when covering basic and advanced components.
 
-Choose a sensible class to place this in. For this example we're going to make a new package called component and a class to contain all of our component types called ModComponents. Make sure you call ModComponents.initialize() in your mod's initializer.
+Choose a sensible class to place this in. For this example, we're going to make a new package called component and a class to contain all of our component types called ```ModComponents```. Make sure you call ```ModComponents.initialize()``` in your mod's initializer.
 ```java
 public class ModComponents {
     protected static void initialize() {
@@ -757,10 +751,10 @@ There are a few things here worth noting. On the first and fourth lines, you can
 
 Secondly, you must provide an Identifier containing the intended ID of your component. This is namespaced with your mod's ID.
 
-Lastly, we have a ComponentType.Builder that creates the actual ComponentType instance that's being registered. This contains another crucial detail we will need to discuss: your component's Codec. This is currently null but we will also fill it in soon.
+Lastly, we have a ```ComponentType.Builder``` that creates the actual ```ComponentType``` instance that's being registered. This contains another crucial detail we will need to discuss: your component's Codec. This is currently null but we will also fill it in soon.
 
-Basic Data Components
-Basic data components (like minecraft:damage) consist of a single data value, such as an int, float, boolean or String.
+### Basic Data Components
+Basic data components (like ```minecraft:damage```) consist of a single data value, such as an int, float, boolean or String.
 
 As an example, let's create an Integer value that will track how many times the player has right-clicked while holding our item. Let's update our component registration to the following:
 
@@ -772,15 +766,15 @@ public static final ComponentType<Integer> CLICK_COUNT_COMPONENT = Registry.regi
 );
 ```
 
-You can see that we're now passing <Integer> as our generic type, indicating that this component will be stored as a single int value. For our codec, we are using the provided Codec.INT codec. We can get away with using basic codecs for simple components like this, but more complex scenarios might require a custom codec (this will be covered briefly later on).
+You can see that we're now passing Integer as our generic type, indicating that this component will be stored as a single int value. For our codec, we are using the provided ```Codec.INT``` codec. We can get away with using basic codecs for simple components like this, but more complex scenarios might require a custom codec (this will be covered briefly later on).
 
 If you start the game, you should be able to enter a command like this:
 
-/give @p minecraft:diamond[fabric-docs-reference:click_count=5]
+>/give @p minecraft:diamond[fabric-docs-reference:click_count=5]
 
 When you run the command, you should receive the item containing the component. However, we are not currently using our component to do anything useful. Let's start by reading the value of the component in a way we can see.
 
-Reading Component Value
+### Reading Component Value
 Let's add a new item which will increase the counter each time it is right clicked. You should read the Custom Item Interactions page which will cover the techniques we will use in this guide.
 
 ```java
@@ -788,7 +782,6 @@ public class CounterItem extends Item {
     public CounterItem(Settings settings) {
         super(settings);
     }
-
 }
 ```
 
@@ -800,7 +793,7 @@ public static final Item COUNTER = register(new CounterItem(
 ), "counter");
 ```
 
-We're going to add some tooltip code to display the current value of the click count when we hover over our item in the inventory. We can use the get() method on our ItemStack to get our component value like so:
+We're going to add some tooltip code to display the current value of the click count when we hover over our item in the inventory. We can use the ```get()``` method on our ```ItemStack``` to get our component value like so:
 ```java
 int clickCount = stack.get(ModComponents.CLICK_COUNT_COMPONENT);
 ```
@@ -815,7 +808,7 @@ public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> to
 }
 ```
 
-Don't forget to update your lang file (/assets/mod-id/lang/en_us.json) and add these two lines:
+Don't forget to update your lang file ```(/assets/mod-id/lang/en_us.json)``` and add these two lines:
 
 ```java
 {
@@ -826,22 +819,25 @@ Don't forget to update your lang file (/assets/mod-id/lang/en_us.json) and add t
 
 Start up the game and run this command to give yourself a new Counter item with a count of 5.
 
-/give @p fabric-docs-reference:counter[fabric-docs-reference:click_count=5]
+>/give @p fabric-docs-reference:counter[fabric-docs-reference:click_count=5]
 
 When you hover over this item in your inventory, you should see the count displayed in the tooltip!
 
 However, if you give yourself a new Counter item without the custom component, the game will crash when you hover over the item in your inventory. You should see an error like this in the crash report:
 
+```
 java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "net.minecraft.item.ItemStack.get(net.minecraft.component.ComponentType)" is null
         at com.example.docs.item.custom.CounterItem.appendTooltip(LightningStick.java:45)
         at net.minecraft.item.ItemStack.getTooltip(ItemStack.java:767)
+```
 
-As expected, since the ItemStack doesn't currently contain an instance of our custom component, calling stack.get() with our component type will return null.
+As expected, since the ```ItemStack``` doesn't currently contain an instance of our custom component, calling ```stack.get()``` with our component type will return null.
 
 There are three solutions we can use to address this problem.
 
-Setting a Default Component Value
-When you register your item and pass a Item.Settings object to your item constructor, you can also provide a list of default components that are applied to all new items. If we go back to our ModItems class, where we register the CounterItem, we can add a default value for our custom component. Add this so that new items display a count of 0.
+1. Setting a Default Component Value
+
+When you register your item and pass a ```Item.Settings``` object to your item constructor, you can also provide a list of default components that are applied to all new items. If we go back to our ModItems class, where we register the ```CounterItem```, we can add a default value for our custom component. Add this so that new items display a count of 0.
 
 ```java
 public static final Item COUNTER = register(
@@ -855,66 +851,62 @@ public static final Item COUNTER = register(
 
 When a new item is created, it will automatically apply our custom component with the given value.
 
-WARNING
+WARNING: Using commands, it is possible to remove a default component from an ItemStack. You should refer to the next two sections to properly handle a scenario where the component is not present on your item.
 
-Using commands, it is possible to remove a default component from an ItemStack. You should refer to the next two sections to properly handle a scenario where the component is not present on your item.
+2. Reading with a Default Value
 
-Reading with a Default Value
-In addition, when reading the component value, we can use the getOrDefault() method on our ItemStack object to return a specified default value if the component is not present on the stack. This will safeguard against any errors resulting from a missing component. We can adjust our tooltip code like so:
+In addition, when reading the component value, we can use the ```getOrDefault()``` method on our ```ItemStack``` object to return a specified default value if the component is not present on the stack. This will safeguard against any errors resulting from a missing component. We can adjust our tooltip code like so:
 
+```java
 int clickCount = stack.getOrDefault(ModComponents.CLICK_COUNT_COMPONENT, 0);
+```
 
 As you can see, this method takes two arguments: our component type like before, and a default value to return if the component is not present.
 
-Checking if a Component Exists
-You can also check for the existence of a specific component on an ItemStack using the contains() method. This takes the component type as an argument and returns true or false depending on whether the stack contains that component.
+3. Checking if a Component Exists
+You can also check for the existence of a specific component on an ```ItemStack``` using the ```contains()``` method. This takes the component type as an argument and returns true or false depending on whether the stack contains that component.
 
-
+```java
 boolean exists = stack.contains(ModComponents.CLICK_COUNT_COMPONENT);
-1
-Fixing the Error
+```
+
+### Fixing the Error
 We're going to go with the third option. So along with adding a default component value, we'll also check if the component is present on the stack and only show the tooltip if it is.
 
-
+```java
 public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
     if (stack.contains(ModComponents.CLICK_COUNT_COMPONENT)) {
         int count = stack.get(ModComponents.CLICK_COUNT_COMPONENT);
         tooltip.add(Text.translatable("item.fabric-docs-reference.counter.info", count).formatted(Formatting.GOLD));
     }
 }
-1
-2
-3
-4
-5
-6
-Start the game again and hover over the item without the component, you should see that it displays "Used 0 times" and no longer crashes the game.
+```
 
-Tooltip showing "Used 0 times"
+Start the game again and hover over the item without the component, you should see that it displays "Used 0 times" and no longer crashes the game.
 
 Try giving yourself a Counter with our custom component removed. You can use this command to do so:
 
 
-/give @p fabric-docs-reference:counter[!fabric-docs-reference:click_count]
-1
+>/give @p fabric-docs-reference:counter[!fabric-docs-reference:click_count]
+
 When hovering over this item, the tooltip should be missing.
 
-Counter item with no tooltip
-
-Updating Component Value
+## Updating Component Value
 Now let's try updating our component value. We're going to increase the click count each time we use our Counter item. To change the value of a component on an ItemStack we use the set() method like so:
 
-
+```java
 stack.set(ModComponents.CLICK_COUNT_COMPONENT, newValue);
-1
+```
+
 This takes our component type and the value we want to set it to. In this case it will be our new click count. This method also returns the old value of the component (if one is present) which may be useful in some situations. For example:
 
-
+```java
 int oldValue = stack.set(ModComponents.CLICK_COUNT_COMPONENT, newValue);
-1
-Let's set up a new use() method to read the old click count, increase it by one, and then set the updated click count.
+```
 
+Let's set up a new ```use()``` method to read the old click count, increase it by one, and then set the updated click count.
 
+```java
 public ActionResult use(World world, PlayerEntity user, Hand hand) {
     ItemStack stack = user.getStackInHand(hand);
 
@@ -929,98 +921,76 @@ public ActionResult use(World world, PlayerEntity user, Hand hand) {
 
     return ActionResult.SUCCESS;
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
+```
+
 Now try starting the game and right-clicking with the Counter item in your hand. If you open up your inventory and look at the item again you should see that the usage number has gone up by the amount of times you've clicked it.
 
-Tooltip showing "Used 8 times"
+# Removing Component Value
 
-Removing Component Value
-You can also remove a component from your ItemStack if it is no longer needed. This is done by using the remove() method, which takes in your component type.
+You can also remove a component from your ItemStack if it is no longer needed. This is done by using the ```remove()``` method, which takes in your component type.
 
-
+```java
 stack.remove(ModComponents.CLICK_COUNT_COMPONENT);
-1
+```
+
 This method also returns the value of the component before being removed, so you can also use it as follows:
 
-
+```java
 int oldCount = stack.remove(ModComponents.CLICK_COUNT_COMPONENT);
-1
-Advanced Data Components
-You may need to store multiple attributes in a single component. As a vanilla example, the minecraft:food component stores several values related to food, such as nutrition, saturation, eat_seconds and more. In this guide we'll refer to them as "composite" components.
+```
+
+# Advanced Data Components
+You may need to store multiple attributes in a single component. As a vanilla example, the ```minecraft:food``` component stores several values related to food, such as nutrition, saturation, eat_seconds and more. In this guide we'll refer to them as "composite" components.
 
 For composite components, you must create a record class to store the data. This is the type we'll register in our component type and what we'll read and write when interacting with an ItemStack. Start by making a new record class in the component package we made earlier.
 
-
+```java
 public record MyCustomComponent() {
 }
-1
-2
+```
+
 Notice that there's a set of brackets after the class name. This is where we define the list of properties we want our component to have. Let's add a float and a boolean called temperature and burnt respectively.
 
-
+```java
 public record MyCustomComponent(float temperature, boolean burnt) {
 }
-1
-2
-Since we are defining a custom data structure, there won't be a pre-existing Codec for our use case like with the basic component. This means we're going to have to construct our own codec. Let's define one in our record class using a RecordCodecBuilder which we can reference once we register the component. For more details on using a RecordCodecBuilder you can refer to this section of the Codecs page.
+```
 
+Since we are defining a custom data structure, there won't be a pre-existing Codec for our use case like with the basic component. This means we're going to have to construct our own codec. Let's define one in our record class using a ```RecordCodecBuilder``` which we can reference once we register the component. For more details on using a ```RecordCodecBuilder``` you can refer to this section of the Codecs page.
 
+```java
 public static final Codec<MyCustomComponent> CODEC = RecordCodecBuilder.create(builder -> {
     return builder.group(
         Codec.FLOAT.fieldOf("temperature").forGetter(MyCustomComponent::temperature),
         Codec.BOOL.optionalFieldOf("burnt", false).forGetter(MyCustomComponent::burnt)
     ).apply(builder, MyCustomComponent::new);
 });
-1
-2
-3
-4
-5
-6
-You can see that we are defining a list of custom fields based on the primitive Codec types. However, we are also telling it what our fields are called using fieldOf(), and then using forGetter() to tell the game which attribute of our record to populate.
+```
 
-You can also define optional fields by using optionalFieldOf() and passing a default value as the second argument. Any fields not marked optional will be required when setting the component using /give so make sure you mark any optional arguments as such when creating your codec.
+You can see that we are defining a list of custom fields based on the primitive Codec types. However, we are also telling it what our fields are called using ```fieldOf()```, and then using ```forGetter()``` to tell the game which attribute of our record to populate.
 
-Finally, we call apply() and pass our record's constructor. For more details on how to construct codecs and more advanced use cases, be sure to read the Codecs page.
+You can also define optional fields by using ```optionalFieldOf()``` and passing a default value as the second argument. Any fields not marked optional will be required when setting the component using /give so make sure you mark any optional arguments as such when creating your codec.
 
-Registering a composite component is similar to before. We just pass our record class as the generic type, and our custom Codec to the codec() method.
+Finally, we call ```apply()``` and pass our record's constructor. For more details on how to construct codecs and more advanced use cases, be sure to read the Codecs page.
 
+Registering a composite component is similar to before. We just pass our record class as the generic type, and our custom Codec to the ```codec()``` method.
 
+```java
 public static final ComponentType<MyCustomComponent> MY_CUSTOM_COMPONENT = Registry.register(
         Registries.DATA_COMPONENT_TYPE,
         Identifier.of(FabricDocsReference.MOD_ID, "custom"),
         ComponentType.<MyCustomComponent>builder().codec(MyCustomComponent.CODEC).build()
 );
-1
-2
-3
-4
-5
-Now start the game. Using the /give command, try applying the component. Composite component values are passed as an object enclosed with {}. If you put blank curly brackets, you'll see an error telling you that the required key temperature is missing.
+```
 
-Give command showing missing key "temperature"
+Now start the game. Using the ```/give``` command, try applying the component. Composite component values are passed as an object enclosed with ```{}```. If you put blank curly brackets, you'll see an error telling you that the required key temperature is missing.
 
 Add a temperature value to the object using the syntax temperature:8.2. You can also optionally pass a value for burnt using the same syntax but either true or false. You should now see that the command is valid, and can give you an item containing the component.
 
-Valid give command showing both properties
+# Getting, Setting and Removing Advanced Components
+Using the component in code is the same as before. Using ```stack.get()``` will return an instance of your record class, which you can then use to read the values. Since records are read-only, you will need to create a new instance of your record to update the values.
 
-Getting, Setting and Removing Advanced Components
-Using the component in code is the same as before. Using stack.get() will return an instance of your record class, which you can then use to read the values. Since records are read-only, you will need to create a new instance of your record to update the values.
-
-
+```java
 // read values of component
 MyCustomComponent comp = stack.get(ModComponents.MY_CUSTOM_COMPONENT);
 float temp = comp.temperature();
@@ -1036,42 +1006,25 @@ if (stack.contains(ModComponents.MY_CUSTOM_COMPONENT)) {
 
 // remove component
 stack.remove(ModComponents.MY_CUSTOM_COMPONENT);
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-You can also set a default value for a composite component by passing a component object to your Item.Settings. For example:
+```
 
+You can also set a default value for a composite component by passing a component object to your ```Item.Settings```. For example:
 
+```java
 public static final Item COUNTER = register(new CounterItem(
     new Item.Settings().component(ModComponents.MY_CUSTOM_COMPONENT, new MyCustomComponent(0.0f, false))
 ), "counter");
-1
-2
-3
+```
+
 Now you can store custom data on an ItemStack. Use responsibly!
 
-Potions
+# Potions
 Potions are consumables that grants an entity an effect. A player can brew potions using a Brewing Stand or obtain them as items through various other game mechanics.
+Just like items and blocks, custom potions need to be registered. 
 
-Custom Potions
-Just like items and blocks, potions need to be registered.
-
-Creating the Potion
 Let's start by declaring a field to store your Potion instance. We will be directly using a ModInitializer-implementing class to hold this.
 
-
+```java
 public class FabricDocsReferencePotions implements ModInitializer {
     public static final Potion TATER_POTION =
             Registry.register(
@@ -1082,29 +1035,20 @@ public class FabricDocsReferencePotions implements ModInitializer {
                                     FabricDocsReferenceEffects.TATER,
                                     3600,
                                     0)));
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-We pass an instance of StatusEffectInstance, which takes 3 parameters:
+```
 
-RegistryEntry<StatusEffect> type - An effect. We use our custom effect here. Alternatively you can access vanilla effects through vanilla's StatusEffects class.
-int duration - Duration of the effect in game ticks.
-int amplifier - An amplifier for the effect. For example, Haste II would have an amplifier of 1.
-INFO
+We pass an instance of ```StatusEffectInstance```, which takes 3 parameters:
+
+```RegistryEntry<StatusEffect> type``` - An effect. We use our custom effect here. Alternatively you can access vanilla effects through vanilla's StatusEffects class.
+```int duration``` Duration of the effect in game ticks.
+```int amplifier``` An amplifier for the effect. For example, Haste II would have an amplifier of 1.
 
 To create your own potion effect, please see the Effects guide.
 
 Registering the Potion
 In our initializer, we will use the FabricBrewingRecipeRegistryBuilder.BUILD event to register our potion using the BrewingRecipeRegistry.registerPotionRecipe method.
 
-
+```java
 @Override
 public void onInitialize() {
     FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
@@ -1117,22 +1061,13 @@ public void onInitialize() {
                 Registries.POTION.getEntry(TATER_POTION)
         );
     });
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
+```
+
 registerPotionRecipe takes 3 parameters:
 
-RegistryEntry<Potion> input - The starting potion's registry entry. Usually this can be a Water Bottle or an Awkward Potion.
-Item item - The item which is the main ingredient of the potion.
-RegistryEntry<Potion> output - The resultant potion's registry entry.
+```RegistryEntry<Potion> input``` - The starting potion's registry entry. Usually this can be a Water Bottle or an Awkward Potion.
+```Item item``` - The item which is the main ingredient of the potion.
+```RegistryEntry<Potion> output``` - The resultant potion's registry entry.
+
 Once registered, you can brew a Tater potion using a potato.
 

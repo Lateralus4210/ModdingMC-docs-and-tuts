@@ -1,15 +1,4 @@
-Prerequisites
-It's strongly recommended to learn Java before diving into the modding world (especially if you don't have prior programming experience). Minecraft, in its codebase, and mods, using Fabric API, use more advanced Java concepts like lambdas, generics and polymorphism. If you don't know all of these concepts, you may have some difficulties modding. Here are some online resources that will help learning Java.
-
-Basic Java Tutorials: https://www.w3schools.com/java/default.asp
-
-Introduction to Programming using Java by David J. Eck: http://math.hws.edu/javanotes/
-
-From here, move on to README-Fabric-docs.md and other docs.
-
----
-
-### 🧠 TOP-LEVEL DIRS TO KNOW
+# 🧠 TOP-LEVEL DIRS TO KNOW
 - 📁 `bin/`  
   - Created by some IDEs (like Eclipse)  
   - Temporary compiled class files  
@@ -32,7 +21,7 @@ From here, move on to README-Fabric-docs.md and other docs.
 
 ---
 
-### 🧠 CORE SUBDIRS TO KNOW
+# 🧠 CORE SUBDIRS TO KNOW
 - 📁 `src/main/java/`  
   - Shared code — runs on both client and server  
   - Your main mod class (e.g. `ZachsHax.java`)  
@@ -53,7 +42,7 @@ From here, move on to README-Fabric-docs.md and other docs.
 
 ---
 
-### 🧠 ROOT FILES TO KNOW
+# 🧠 ROOT FILES TO KNOW
 - 📄 `build.gradle`  
   - Main build script for your mod  
   - Declares dependencies, Minecraft version, mappings, mod ID  
@@ -86,7 +75,7 @@ From here, move on to README-Fabric-docs.md and other docs.
 
 ---
 
-### 🧠 CORE FILES TO KNOW
+# 🧠 CORE FILES TO KNOW
 
 - 📄 `ExampleMod.java`  
   - Main mod entry point that runs when the mod loads  
@@ -117,8 +106,9 @@ From here, move on to README-Fabric-docs.md and other docs.
   - Controls builds, dependencies, and Minecraft version  
   📍 `build.gradle`
 
+---
 
-### 🧠 SRC FOLDER STRUCTURE
+# 🧠 SRC FOLDER STRUCTURE
 
 - 📁 `src/main/`  
   - Shared code and resources used on **both client and server**  
@@ -129,7 +119,7 @@ From here, move on to README-Fabric-docs.md and other docs.
   - Contains things like GUI code, keybindings, rendering logic
 
 
-### 🧠 `src/main/` — SHARED CODE & RESOURCES
+ ### 🧠 `src/main/` — SHARED CODE & RESOURCES
 
   - 📁 `java/`  
     - Core mod logic shared by both client and server  
@@ -160,7 +150,7 @@ From here, move on to README-Fabric-docs.md and other docs.
 
 
 
-### 🧠 MOD EXECUTION FLOW — How your mod starts, in order
+## 🧠 MOD EXECUTION FLOW — How your mod starts, in order
 
 - 📄 ./gradlew runClient  
   Builds and launches Minecraft in a dev environment  

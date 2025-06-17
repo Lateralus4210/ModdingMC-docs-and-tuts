@@ -6,14 +6,14 @@
 ##### H5
 ###### H6
 
-# Text Formatting
+
 *italic* or _italic_  
 **bold** or __bold__  
 ***bold italic*** or ___bold italic___  
 ~~strikethrough~~  
 `inline code`
 
-# Code Blocks
+
 ```
 multi-line code block
 ```
@@ -23,7 +23,7 @@ multi-line code block
 def hello(): print("Hello")
 ```
 
-# Lists
+
 - Item
 * Item
 + Item
@@ -34,11 +34,9 @@ def hello(): print("Hello")
 - Parent
   - Child
 
-# Links & Images
 [Link text](http://example.com)  
 ![Alt text](http://image.url)
 
-# Blockquotes
 > This is a quote.
 >> Nested quote
 
@@ -47,7 +45,7 @@ def hello(): print("Hello")
 ***
 ___
 
-# Tables
+
 | Column A | Column B |
 |----------|----------|
 | Value 1  | Value 2  |
