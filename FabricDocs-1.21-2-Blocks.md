@@ -1,9 +1,11 @@
-Creating Your First Block
+# Creating Your First Block
 
 This page is written for version:
 
 1.21.4
 
+
+[Special Spreadsheet on Google Drive](http://drive.google.com)  
 
 Page Authors
 Earthcomputer
@@ -12,14 +14,16 @@ its-miroma
 xEobardThawne
 Blocks are the building blocks of Minecraft (no pun intended) - just like everything else in Minecraft, they're stored in registries.
 
-Preparing Your Blocks Class
+---
+
+## Preparing Your Blocks Class
 If you've completed the Creating Your First Item page, this process will feel extremely familiar - you will need to create a method that registers your block, and its block item.
 
 You should put this method in a class called ModBlocks (or whatever you want to name it).
 
 Mojang does something extremely similar like this with vanilla blocks; you can refer to the Blocks class to see how they do it.
 
-
+```java
 public class ModBlocks {
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         // Create a registry key for the block
@@ -50,41 +54,13 @@ public class ModBlocks {
     }
 
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
+```
+
 Just like with items, you need to ensure that the class is loaded so that all static fields containing your block instances are initialized.
 
 You can do this by creating a dummy initialize method, which can be called in your mod's initializer to trigger the static initialization.
 
-INFO
+### INFO
 
 If you are unaware of what static initialization is, it is the process of initializing static fields in a class. This is done when the class is loaded by the JVM, and is done before any instances of the class are created.
 
@@ -100,20 +76,17 @@ public class ModBlocks {
 4
 5
 
+```java
 public class FabricDocsReferenceBlocks implements ModInitializer {
     @Override
     public void onInitialize() {
         ModBlocks.initialize();
     }
 }
-1
-2
-3
-4
-5
-6
-Creating And Registering Your Block
-Similarly to items, blocks take a AbstractBlock.Settings class in their constructor, which specifies properties about the block, such as its sound effects and mining level.
+```
+
+### Creating And Registering Your Block
+Similarly to items, blocks take a ```AbstractBlock.Settings``` class in their constructor, which specifies properties about the block, such as its sound effects and mining level.
 
 We will not cover all the options here: you can view the class yourself to see the various options, which should be self-explanatory.
 
@@ -123,7 +96,7 @@ We create our block settings in a similar way to how we created item settings in
 We tell the register method to create a Block instance from the block settings by calling the Block constructor.
 TIP
 
-You can also use AbstractBlock.Settings.copy(AbstractBlock block) to copy the settings of an existing block, in this case, we could have used Blocks.DIRT to copy the settings of dirt, but for example purposes we'll use the builder.
+You can also use ```AbstractBlock.Settings.copy(AbstractBlock block)``` to copy the settings of an existing block, in this case, we could have used Blocks.DIRT to copy the settings of dirt, but for example purposes we'll use the builder.
 
 
 public static final Block CONDENSED_DIRT = register(
@@ -239,7 +212,9 @@ This file should be located in the assets/mod-id/blockstates folder, and its nam
 7
 TIP
 
-Blockstates are incredibly complex, which is why they will be covered next in their own separate page.
+# Blockstates 
+
+are incredibly complex, which is why they will be covered next in their own separate page.
 
 Restarting the game, or reloading via F3+T to apply changes - you should be able to see the block texture in the inventory and physically in the world:
 
