@@ -14,7 +14,7 @@
     - Define state (define parameters (variables) and give them values)
     - Instantiate it (create a new object)
 
->Disclaimer: these ideas are pretty abstract even once you understand them, and will make more and more sense the more exposure you have to Object-Oriented Programming (OOP) languages.
+>Disclaimer: these ideas are pretty abstract even once you understand them, and will make more and more sense the more exposure you have to Object-Oriented Programming (OOP).
 
 
 ###### misc concepts and notes:

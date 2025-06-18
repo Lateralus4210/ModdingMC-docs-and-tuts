@@ -61,7 +61,7 @@ Fabric API provides a wide set of APIs that build on top of Minecraft's existing
 
 While Fabric API offers powerful features, some tasks, like basic block registration, can be accomplished without it using the vanilla APIs.
 
-You can use the Fabric Template Mod Generator (https://fabricmc.net/develop/template/) to generate a new project for your mod - you should fill in the required fields, such as the mod name, package name, and the Minecraft version that you want to develop for.
+You can use the [Fabric Template Mod Generator](https://fabricmc.net/develop/template/) to generate a new project for your mod - you should fill in the required fields, such as the mod name, package name, and the Minecraft version that you want to develop for.
 
 The package name should be lowercase, separated by dots, and unique to avoid conflicts with other programmers' packages. It is typically formatted as a reversed internet domain, such as com.example.mod-id.
 
@@ -116,7 +116,7 @@ Fabric Loom provides a variety of launch profiles to help you start and debug yo
 ### Launch Profiles
 If you're using IntelliJ IDEA, you can find the launch profiles in the top-right corner of the window. Click the dropdown menu to see the available launch profiles.
 
-There should be a client and server profile, with the option to either run it normally or in debug mode:
+There should be a client and server profile, with the option to either run it normally or in debug mode.
 
 # Gradle Tasks
 If you're using the command line, you can use the following Gradle commands to start the game:

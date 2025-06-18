@@ -1,13 +1,13 @@
 # Creating Your First Item
 This page will demonstrate some key concepts relating to items, and how you can register, texture, model and name them.
 
-If you aren't aware, everything in Minecraft is stored in registries, and items are no exception to that.
+If you aren't aware, everything in Minecraft is stored in registries, and items are no exception to that. Registries act as centralized databases that manage and organize game elements. This system ensures consistent access, identification, and modification of items and other components.
 
 ### Preparing Your Items Class
 To simplify the registering of items, you can create a method that accepts a string identifier, some item settings and a factory (a type of function) to create the Item instance.
 This method will create an item with the provided identifier and register it with the game's item registry.
-You can put this method in a class called ModItems (or whatever you want to name the class). 
-Mojang does this with their items as well! Check out the Items class for inspiration.
+You can put this method in a class called ```ModItems``` (or whatever you want to name the class). 
+(Mojang does this with their items as well! Check out the Items class for inspiration.)
 
 ```json
 src/main/java
